@@ -1,6 +1,7 @@
 from flask import current_app
 
 from dao.model.user import UserSchema
+from dao.tools.security import compare_passwords, generate_password_digest
 from dao.user import UserDAO
 
 

@@ -4,6 +4,7 @@ from flask import request
 from flask_restx import abort, Namespace, Resource, reqparse
 
 from dao.tools.security import auth_required, ItemNotFound, admin_required, login_user
+from implemented import user_service
 from service.user import UsersService
 from setup_db import db
 
@@ -43,11 +44,20 @@ class UserView(Resource):
         if not req_json:
             abort(400, message="Bad request")
         try:
-            user = UsersService(db.session).get_item_by_username(username=req_json.get("username"))
-            tokens = login_user(request.json, user)
-            return tokens, 200
+            user = user_service.create(req_json)
+            return "", 200
         except ItemNotFound:
             abort(404, message="Error, ошибка автоматизации")
+    # def post(self):
+    #     req_json = request.json
+    #     if not req_json:
+    #         abort(400, message="Bad request")
+    #     try:
+    #         user = UsersService(db.session).get_item_by_username(username=req_json.get("username"))
+    #         tokens = login_user(request.json, user)
+    #         return tokens, 200
+    #     except ItemNotFound:
+    #         abort(404, message="Error, ошибка автоматизации")
 
     """частичное изменение"""
 
